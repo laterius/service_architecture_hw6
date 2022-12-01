@@ -1,0 +1,251 @@
+{
+	"info": {
+		"_postman_id": "5b239aa7-62ab-4135-94a1-73daa68abbc5",
+		"name": "Идемпотентость и коммутативность API в HTTP и очередях",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "8551747"
+	},
+	"item": [
+		{
+			"name": "Create order 1",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"check response\", function () {",
+							"    pm.expect(pm.response.code).to.eql(200)",
+							"});",
+							""
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "X-Idempotence-Key",
+						"value": "a34911ec-32f1-4f44-90ed-5e9ff348e650",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n    \"userId\": 2,\n    \"status\": 1,\n    \"amount\": 5\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{orderUrl}}/api/order",
+					"host": [
+						"{{orderUrl}}"
+					],
+					"path": [
+						"api",
+						"order"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Create order 2",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"check response\", function () {",
+							"    pm.expect(pm.response.code).to.eql(500)",
+							"});"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "X-Idempotence-Key",
+						"value": "a34911ec-32f1-4f44-90ed-5e9ff348e650",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n    \"userId\": 2,\n    \"status\": 1,\n    \"amount\": 5\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{orderUrl}}/api/order",
+					"host": [
+						"{{orderUrl}}"
+					],
+					"path": [
+						"api",
+						"order"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Get orders",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"check response\", function () {",
+							"    pm.expect(pm.response.code).to.eql(200)",
+							"});",
+							"",
+							"var data = pm.response.json();",
+							"pm.test('Number of orders = ' + data.length, function () {",
+							"    pm.expect(data.length).to.equal(1);",
+							"});",
+							""
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "{{orderUrl}}/api/orders",
+					"host": [
+						"{{orderUrl}}"
+					],
+					"path": [
+						"api",
+						"orders"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Create another order",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"check response\", function () {",
+							"    pm.expect(pm.response.code).to.eql(200)",
+							"});",
+							""
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "X-Idempotence-Key",
+						"value": "dd4f06a4-e2b3-4ff9-a7d1-d309851b06a3",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n    \"userId\": 2,\n    \"status\": 1,\n    \"amount\": 5\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{orderUrl}}/api/order",
+					"host": [
+						"{{orderUrl}}"
+					],
+					"path": [
+						"api",
+						"order"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Get orders",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"check response\", function () {",
+							"    pm.expect(pm.response.code).to.eql(200)",
+							"});",
+							"",
+							"var data = pm.response.json();",
+							"pm.test('Number of orders = ' + data.length, function () {",
+							"    pm.expect(data.length).to.equal(2);",
+							"});",
+							""
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "{{orderUrl}}/api/orders",
+					"host": [
+						"{{orderUrl}}"
+					],
+					"path": [
+						"api",
+						"orders"
+					]
+				}
+			},
+			"response": []
+		}
+	],
+	"event": [
+		{
+			"listen": "prerequest",
+			"script": {
+				"type": "text/javascript",
+				"exec": [
+					""
+				]
+			}
+		},
+		{
+			"listen": "test",
+			"script": {
+				"type": "text/javascript",
+				"exec": [
+					""
+				]
+			}
+		}
+	],
+	"variable": [
+		{
+			"key": "orderUrl",
+			"value": "arch.homework",
+			"type": "string"
+		}
+	]
+}
